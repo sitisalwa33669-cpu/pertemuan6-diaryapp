@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 
 export function useDiarySearch(entries: any[]) {
-  // Task 1: Filter Mood menggunakan useState
+  // Task 1: Filter Mood pada Home menggunakan useState
   const [query, setQuery] = useState("");
   const [selectedMood, setSelectedMood] = useState("");
 
@@ -12,10 +12,10 @@ export function useDiarySearch(entries: any[]) {
         entry.title.toLowerCase().includes(query.toLowerCase()) ||
         entry.preview.toLowerCase().includes(query.toLowerCase());
       const matchesMood = selectedMood === "" || entry.mood === selectedMood;
-
+      
       return matchesQuery && matchesMood;
     });
-  }, [entries, query, selectedMood]); // Dependency: akan dihitung ulang jika 3 nilai ini berubah
+  }, [entries, query, selectedMood]);
 
   // Task 6: Tombol Reset Filter
   const resetFilter = () => {
