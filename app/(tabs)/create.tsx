@@ -4,15 +4,19 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDiary } from "../src/context/DiaryContext";
 import { COLORS, RADIUS, SPACE } from "../src/styles/tokens";
 
-const MOODS = [" ", " ", " ", " "];
+// 1. Ganti spasi kosong dengan emoji yang unik
+const MOODS = ["😊", "🚀", "📖", "😢"];
+
 export default function CreateScreen() {
   const router = useRouter();
   const { addEntry } = useDiary();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("2026-11-02");
   const [body, setBody] = useState("");
-  const [mood, setMood] = useState(" ");
+  const [mood, setMood] = useState(MOODS[0]); // Set default mood ke emoji pertama
+
   const canSave = title.trim().length > 0 && body.trim().length > 0;
+
   const save = () => {
     if (!canSave) return;
     addEntry({
@@ -25,9 +29,10 @@ export default function CreateScreen() {
 
     setTitle("");
     setBody("");
-    setMood(" ");
+    setMood(MOODS[0]);
     router.replace("/");
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Tambah Diary</Text>
@@ -57,9 +62,10 @@ export default function CreateScreen() {
       <Text style={styles.label}>Mood</Text>
 
       <View style={styles.moodRow}>
-        {MOODS.map((item) => (
+        {MOODS.map((item, index) => (
           <Pressable
-            key={item}
+            // 2. Gunakan index sebagai key cadangan agar 100% unik
+            key={index}
             onPress={() => setMood(item)}
             style={[styles.moodButton, mood === item && styles.moodSelected]}
           >
@@ -78,6 +84,7 @@ export default function CreateScreen() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

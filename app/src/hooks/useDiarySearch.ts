@@ -1,33 +1,35 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { DiaryEntry } from "../context/DiaryContext";
-export function useDiarySearch(entries: DiaryEntry[]) {
+export function useDiarySearch(entries: any[]) {
+  // Task 1: Filter Mood menggunakan useState
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 350);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [query]);
+  const [selectedMood, setSelectedMood] = useState("");
+
+  // Task 2: Gabungkan query dan filter mood menggunakan useMemo
   const filteredEntries = useMemo(() => {
-    const q = debouncedQuery.trim().toLowerCase();
-    if (!q) {
-      return entries;
-    }
-    return entries.filter(
-      (entry) =>
-        entry.title.toLowerCase().includes(q) ||
-        entry.preview.toLowerCase().includes(q) ||
-        entry.date.toLowerCase().includes(q),
-    );
-  }, [entries, debouncedQuery]);
+    return entries.filter((entry) => {
+      const matchesQuery =
+        entry.title.toLowerCase().includes(query.toLowerCase()) ||
+        entry.preview.toLowerCase().includes(query.toLowerCase());
+      const matchesMood = selectedMood === "" || entry.mood === selectedMood;
+
+      return matchesQuery && matchesMood;
+    });
+  }, [entries, query, selectedMood]); // Dependency: akan dihitung ulang jika 3 nilai ini berubah
+
+  // Task 6: Tombol Reset Filter
+  const resetFilter = () => {
+    setQuery("");
+    setSelectedMood("");
+  };
+
   return {
     query,
     setQuery,
+    selectedMood,
+    setSelectedMood,
     filteredEntries,
     resultCount: filteredEntries.length,
+    resetFilter,
   };
 }
