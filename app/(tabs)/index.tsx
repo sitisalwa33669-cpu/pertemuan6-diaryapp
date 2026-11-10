@@ -11,7 +11,9 @@ import {
 import DiaryCard from "../src/component/DiaryCard";
 import { useDiary } from "../src/context/DiaryContext";
 import { useDiarySearch } from "../src/hooks/useDiarySearch";
-import { COLORS, SPACE, TYPO } from "../src/styles/tokens";
+const COLORS = { background: "#F8FAFC", text: "#111827", muted: "#6B7280", border: "#E5E7EB" };
+const SPACE = { s: 8, m: 12, l: 16, xl: 24 };
+const TYPO = { h1: 26 };
 
 export default function HomeScreen() {
   const router = useRouter();
